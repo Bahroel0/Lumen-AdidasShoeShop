@@ -17,7 +17,7 @@ $router->get('/', function () use ($router) {
     return response($res);
 });
 
-$router->post('/api/login', 'LoginController@index');
+$router->post('/api/login', 'UserController@login');
 $router->post('/api/register', 'UserController@register');
 $router->post('/api/update','UserController@changePassword');
 $router->get('/api/user/{id}', ['middleware' => 'auth', 'uses' =>  'UserController@getUser']);
