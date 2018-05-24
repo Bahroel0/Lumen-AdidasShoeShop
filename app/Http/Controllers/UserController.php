@@ -2,6 +2,7 @@
 	namespace App\Http\Controllers;
     use Illuminate\Http\Request;
     use App\User;
+    use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
     /**
@@ -12,8 +13,8 @@ class UserController extends Controller{
     public function register(Request $request){
         $hasher = app()->make('hash');
         $email = $request->input('email');
-
-        $user = User::where('email', $email)->get();
+        $api_token = sha1(time());
+        $user = User::where('email', $email)->first();
 
         if($user){
             $res['success'] = false;
@@ -24,6 +25,7 @@ class UserController extends Controller{
             $register = User::create([
                 'email'=> $email,
                 'password'=> $password,
+                'api_token' => $api_token
             ]);
 
             if ($register) {
@@ -57,18 +59,17 @@ class UserController extends Controller{
                 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
                 $charactersLength = strlen($characters);
                 $randomString = '';
-                for ($i = 0; $i < 10; $i++) {
+                for ($i = 0; $i < 20; $i++) {
                     $randomString .= $characters[rand(0, $charactersLength - 1)];
                 }
 
-                $api_token = sha1(time());
+                
                 $remember_token = User::where('id', $login->id)->update(['remember_token' => $randomString]);
-                $create_token = User::where('id', $login->id)->update(['api_token' => $api_token]);
-                if ($create_token) {
+               // $create_token = User::where('id', $login->id)->update(['api_token' => $api_token]);
+                if ($remember_token) {
+
                     $res['success'] = true;
-                    $res['remember_token'] = $randomString;
-                    $res['api_token'] = $api_token;
-                    $res['message'] = $login;
+                    $res['user'] = $login;
                     return response($res);
                 }
             }else{
