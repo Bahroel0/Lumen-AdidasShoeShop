@@ -12,5 +12,11 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    $res['success'] = true;
+    $res['result'] = "Welcome to AdidasShoeShop services !";
+    return response($res);
 });
+
+$router->post('/api/login', 'LoginController@index');
+$router->post('/api/register', 'UserController@register');
+$router->get('/api/user/{id}', ['middleware' => 'auth', 'uses' =>  'UserController@getUser']);
