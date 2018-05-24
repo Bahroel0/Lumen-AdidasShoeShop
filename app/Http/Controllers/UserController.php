@@ -113,4 +113,21 @@ class UserController extends Controller{
         }
     }
 
+    public function logout(Request $request){
+        $email = $request->input('email');
+        $logout = User::where('email', $email)->first(); 
+        if(!$logout){
+            $res['success'] = false;
+            $res['message'] = 'Your email incorrect!';
+            return response($res);
+        }else{
+            $remember_token = User::where('id', $logout->id)->update(['remember_token' => null]);
+            if($remember_token){
+                $res['success'] = true;
+                $res['message'] = 'Logout success';
+                return response($res);
+            }
+        }
+    }
+
 }
