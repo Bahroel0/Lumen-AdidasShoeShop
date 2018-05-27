@@ -5,11 +5,7 @@
     use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller{
-    /**
-    * Register new user
-    *
-    * @param $request Request
-    */
+
     public function register(Request $request){
         $hasher = app()->make('hash');
         $email = $request->input('email');
@@ -80,16 +76,11 @@ class UserController extends Controller{
         }
     }
 
-    /**
-    * Get user by id
-    *
-    * URL /user/{id}
-    */
     public function getUser(Request $request, $id){
-        $user = User::where('id', $id)->get();
+        $user = User::where('id', $id)->first();
         if ($user) {
             $res['success'] = true;
-            $res['message'] = $user;
+            $res['user'] = $user;
             return response($res);
         }else{
             $res['success'] = false;

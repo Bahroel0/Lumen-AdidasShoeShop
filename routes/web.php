@@ -24,3 +24,7 @@ $router->post('/api/register', 'UserController@register');
 $router->post('/api/update',['middleware' => 'auth', 'uses' =>  'UserController@changePassword']);
 $router->post('/api/logout',['middleware' => 'auth', 'uses' =>  'UserController@logout']);
 $router->get('/api/user/{id}', ['middleware' => 'auth', 'uses' =>  'UserController@getUser']);
+
+
+// produk endpoint
+$router->post('/api/addProduk', 'ProdukController@addProduk');
