@@ -30,9 +30,46 @@
         }
 
         public function getAllProduk(){
-            
+            $produk = Produk::paginate(5);
+            return response($produk);
         }
 
+        public function getKategoriProduk(Request $request){
+            $kategori = $request->get('kategori');
+            $produk = Produk::where('kategori', $kategori)->paginate(3);
+            return response($produk);
+        }
+
+        public function getDetailProduk(Request $request){
+            $id = $request->get('id_produk');
+            $produk = Produk::where('id', $id)->first();
+            $res['success'] = true;
+            $res['produk'] = $produk;
+            return response($res);
+        }
+
+        public function find(Request $request){
+            $searchkey = $request->get('searchkey');
+            $produk = DB::table('tabel_produk')->where('nama','like','%'.$searchkey.'%')->paginate(3);
+            return response($produk);
+        }
+
+
+        public function payment(Request $request){
+            $id_produk = $request->get('id_produk');
+            $jumlah_dibeli = $request->get('jumlah');
+            
+            $produk = Produk::where('id', $id_produk)->first();
+            $stock = $produk->stok;
+
+            if($stock){
+                $produk->stok = $stock-$jumlah_dibeli;
+                $produk->save();
+                $res['success'] = true;
+                $res['message'] = "Sukses dibeli";
+                return response($res);
+            }
+        }
 
 
     }

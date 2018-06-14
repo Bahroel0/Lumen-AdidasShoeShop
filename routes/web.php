@@ -28,3 +28,11 @@ $router->get('/api/user/{id}', ['middleware' => 'auth', 'uses' =>  'UserControll
 
 // produk endpoint
 $router->post('/api/addProduk', 'ProdukController@addProduk');
+$router->get('/api/getAllProduk', 'ProdukController@getAllProduk');
+$router->get('/api/getDetailProduk', 'ProdukController@getDetailProduk');
+$router->get('/api/getKategoriProduk', 'ProdukController@getKategoriProduk');
+$router->get('/api/find', 'ProdukController@find');
+
+
+// payment
+$router->post('/api/payment', 'ProdukController@payment');
