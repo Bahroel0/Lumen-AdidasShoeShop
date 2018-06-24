@@ -35,4 +35,8 @@ $router->get('/api/find', 'ProdukController@find');
 
 
 // payment
-$router->post('/api/payment', 'ProdukController@payment');
+$router->post('/api/payment', ['middleware' => 'auth', 'uses' =>  'ProdukController@payment']);
+
+// riwayat
+$router->post('/api/riwayat/add', ['middleware' => 'auth', 'uses' =>  'RiwayatController@addRiwayat']);
+$router->get('/api/riwayat', ['middleware' => 'auth', 'uses' =>  'RiwayatController@getUserRiwayat']);

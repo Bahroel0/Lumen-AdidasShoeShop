@@ -9,17 +9,20 @@ class UserController extends Controller{
     public function register(Request $request){
         $hasher = app()->make('hash');
         $email = $request->input('email');
+        $name = $request->input('name');
         $api_token = sha1(time());
         $user = User::where('email', $email)->first();
 
         if($user){
             $res['success'] = false;
             $res['message'] = 'Email already exist, use another email!';
+            $res['user'] = null;
             return response($res);
         }else{
             $password = $hasher->make($request->input('password'));
             $register = User::create([
                 'email'=> $email,
+                'name' => $name,
                 'password'=> $password,
                 'api_token' => $api_token
             ]);
